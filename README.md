@@ -9,5 +9,7 @@ Make sure that three containers are running - mysql, nginx and the app. If mysql
 'docker-compose start mysql'
 4. run 'docker-compose exec app php artisan key:generate'
 5. run 'docker-compose exec app php artisan migrate'
+6. run 'docker-compose exec app yarn install'
+7. run 'docker-compose exec app yarn run dev'
 
 The app is now accessible on http://localhost:8080
