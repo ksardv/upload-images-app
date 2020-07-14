@@ -1,0 +1,48 @@
+version: "3.5"
+services:
+  nginx:
+    image: nginx:latest
+    container_name: imagesapp_nginx
+    hostname: imagesapp.io
+    restart: unless-stopped
+    ports:
+      - 8080:80
+    volumes:
+      - ./:/var/www
+      - ./site.conf:/etc/nginx/conf.d/site.conf
+    networks:
+      - imagesapp
+  app:
+    build:
+      args:
+        user: kolyo
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    image: imagesapp
+    container_name: imagesapp-php
+    restart: unless-stopped
+    ports:
+      - 9000:9000
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+    environment:
+      - "DB_HOST=mysql"
+    networks:
+      - imagesapp
+  mysql:
+    image: mysql:5.7
+    container_name: imagesapp_mysql
+    networks:
+      - imagesapp
+    environment:
+      - MYSQL_DATABASE=imagesapp
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+    volumes:
+      - ./setup.sql:/docker-entrypoint-initdb.d/setup.sql
+networks:
+  imagesapp:
+    driver: bridge
