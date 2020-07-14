@@ -7,7 +7,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use App\Photo;
 
-class ImagesController extends Controller
+class PhotosController extends Controller
 {
 /**
      * Create a new controller instance.
@@ -22,17 +22,17 @@ class ImagesController extends Controller
     /**
      *
      */
-    public function getImages()
+    public function getPhotos()
     {
-        $user = Auth::user();
+        $photos = Photo::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
 
-        return response()->json('getting images....');
+        return response()->json($photos);
     }
 
     /**
      *
      */
-    public function uploadImage(Request $request)
+    public function uploadPhoto(Request $request)
     {
         $user = Auth::user();
 

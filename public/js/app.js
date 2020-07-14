@@ -1925,26 +1925,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      images: {}
+      photos: {}
     };
   },
   methods: {
     uploadImage: function uploadImage() {
-      axios.post('/images').then(function (response) {
-        console.log(response.data); //this.images = response.data
+      var _this = this;
+
+      axios.post('/photos').then(function (response) {
+        console.log(response.data);
+        _this.photos = response.data;
       })["catch"](function (error) {
         return console.log(error);
       });
     }
   },
   mounted: function mounted() {
-    var _this = this;
+    var _this2 = this;
 
-    axios.get('/images').then(function (response) {
-      _this.images = response.data;
+    axios.get('/photos').then(function (response) {
+      _this2.photos = response.data;
     })["catch"](function (error) {
       return console.log(error);
     });
@@ -37552,7 +37556,9 @@ var render = function() {
           _c("div", { staticClass: "card-header" }, [_vm._v("Images")]),
           _vm._v(" "),
           _c("div", { staticClass: "card-body" }, [
-            _vm._v("\n                    Images\n                ")
+            _vm.photos.length
+              ? _c("div")
+              : _c("div", [_vm._v("You have not uploaded any photos yet.")])
           ]),
           _vm._v(" "),
           _c("button", { on: { click: _vm.uploadImage } }, [_vm._v("Upload")])
@@ -49818,15 +49824,14 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /*!*****************************************************!*\
   !*** ./resources/js/components/ImagesComponent.vue ***!
   \*****************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ImagesComponent_vue_vue_type_template_id_e3ee596c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ImagesComponent.vue?vue&type=template&id=e3ee596c& */ "./resources/js/components/ImagesComponent.vue?vue&type=template&id=e3ee596c&");
 /* harmony import */ var _ImagesComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ImagesComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/ImagesComponent.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _ImagesComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _ImagesComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -49856,7 +49861,7 @@ component.options.__file = "resources/js/components/ImagesComponent.vue"
 /*!******************************************************************************!*\
   !*** ./resources/js/components/ImagesComponent.vue?vue&type=script&lang=js& ***!
   \******************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
