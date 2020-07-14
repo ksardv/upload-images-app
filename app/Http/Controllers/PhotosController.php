@@ -34,11 +34,15 @@ class PhotosController extends Controller
      */
     public function uploadPhoto(Request $request)
     {
-        $user = Auth::user();
-
         $validatedData = $request->validate([
             'photo' => 'required|file|image|mimes:png|size:1024|dimensions:max_width=1000,max_height=700'
         ]);
+
+        $photo = new Photo;
+        $photo->photo_title = $request->title;
+        $photo->photo_url = $request->photo_url;
+        $photo->user_id = Auth::id();
+        $photo->save();
 
         return response()->json('uploading image....');
     }

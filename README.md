@@ -13,3 +13,6 @@ Make sure that three containers are running - mysql, nginx and the app. If mysql
 7. run 'docker-compose exec app yarn run dev'
 
 The app is now accessible on http://localhost:8080
+
+# Running unit tests
+run 'docker-compose exec app vendor/bin/phpunit'
