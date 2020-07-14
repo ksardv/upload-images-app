@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-<images-component></images-component>
+<home-component></home-component>
 @endsection

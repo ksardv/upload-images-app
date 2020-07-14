@@ -8,6 +8,11 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 window.axios = require('axios');
+import VueRouter from 'vue-router';
+import ImagesComponent from './components/ImagesComponent';
+import NewPhotoComponent from './components/NewPhotoComponent';
+
+Vue.use(VueRouter);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -19,8 +24,17 @@ window.axios = require('axios');
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('images-component', require('./components/ImagesComponent.vue').default);
+Vue.component('home-component', require('./components/HomeComponent.vue').default);
 
+const routes = [
+    {path: '/', redirect: '/photos-list'},
+    { path: '/photos-list', component: ImagesComponent },
+    { path: '/new-photo', component: NewPhotoComponent }
+  ]
+
+const router = new VueRouter({
+    routes
+});
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -28,5 +42,6 @@ Vue.component('images-component', require('./components/ImagesComponent.vue').de
  */
 
 const app = new Vue({
+    router,
     el: '#app',
 });
