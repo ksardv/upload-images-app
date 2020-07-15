@@ -1968,8 +1968,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -37706,8 +37704,6 @@ var render = function() {
             _vm.photos.length
               ? _c("div", [
                   _c("div", { staticClass: "container" }, [
-                    _c("p", [_vm._v("Click on the images to enlarge them.")]),
-                    _vm._v(" "),
                     _c(
                       "div",
                       { staticClass: "row" },
@@ -37715,14 +37711,17 @@ var render = function() {
                         return _c("div", { key: photo.photo_title }, [
                           _c("div", { staticClass: "col-md-4" }, [
                             _c("div", { staticClass: "thumbnail" }, [
+                              _c("h2", [_vm._v(_vm._s(photo.photo_title))]),
+                              _vm._v(" "),
                               _c(
                                 "a",
-                                { attrs: { href: "#", target: "_blank" } },
-                                [
-                                  _c("div", { staticClass: "caption" }, [
-                                    _c("p", [_vm._v(_vm._s(photo.photo_title))])
-                                  ])
-                                ]
+                                {
+                                  attrs: {
+                                    href: photo.photo_url,
+                                    target: "_blank"
+                                  }
+                                },
+                                [_c("img", { attrs: { src: photo.photo_url } })]
                               )
                             ])
                           ])

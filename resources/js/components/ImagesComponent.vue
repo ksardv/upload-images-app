@@ -9,15 +9,13 @@
                         <!-- <div v-if="photos.length"> -->
                         <div v-if="photos.length">
                             <div class="container">
-                                <p>Click on the images to enlarge them.</p>
                                 <div class="row">
                                     <div v-for="photo in photos" :key="photo.photo_title">
                                         <div class="col-md-4">
                                             <div class="thumbnail">
-                                                <a href="#" target="_blank">
-                                                    <div class="caption">
-                                                        <p>{{photo.photo_title}}</p>
-                                                    </div>
+                                                <h2>{{photo.photo_title}}</h2>
+                                                <a :href="photo.photo_url" target="_blank">
+                                                    <img :src="photo.photo_url">
                                                 </a>
                                             </div>
                                         </div>

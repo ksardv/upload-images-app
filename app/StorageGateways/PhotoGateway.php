@@ -13,7 +13,7 @@ class PhotoGateway implements GatewayInterface
 
     public function sendData($data)
     {
-        $response = Http::post(self::STORAGE_API, [
+        $response = Http::asForm()->post(self::STORAGE_API, [
             'imageData' => $data,
         ]);
 
