@@ -38,18 +38,20 @@ class PhotosController extends Controller
     public function uploadPhoto(Request $request)
     {
         $validator = $request->validate([
-            'file' => 'required|file',
+            'file' => 'required',
             'photo_title' => 'unique:photos'
         ]);
 
-        $fileName = time().'.'.$request->file->getClientOriginalExtension();
-        //$file = base64_encode(file_get_contents($request->file('file')));
+        //$fileName = time().'.'.$request->file->getClientOriginalExtension();
+        $file = base64_encode(file_get_contents($request->file('file')->path()));
         //$request->file->move(public_path('upload'), $fileName);
 
         // when success is returnd with url from the bewlo request I save it in the db as photo_url
-        // $response = Http::post('https://test.rxflodev.com', [
-        //     'imageData' => $request->file('file'),
-        // ]);
+        $response = Http::post('https://test.rxflodev.com', [
+            'imageData' => $file,
+        ]);
+
+        dd($response->body());
 
         $photo = new Photo;
         $photo->photo_title = $request->photo_title;
