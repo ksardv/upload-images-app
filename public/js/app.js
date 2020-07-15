@@ -1952,12 +1952,31 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       photos: {}
     };
   },
+  methods: {},
   mounted: function mounted() {
     var _this = this;
 
@@ -2004,19 +2023,34 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    return {};
+    return {
+      name: '',
+      file: '',
+      success: ''
+    };
   },
   methods: {
-    uploadPhoto: function uploadPhoto() {
-      var _this = this;
-
-      axios.post('/photos').then(function (response) {
-        console.log(response.data);
-        _this.photos = response.data;
+    onFileChange: function onFileChange(e) {
+      this.file = e.target.files[0];
+    },
+    formSubmit: function formSubmit(e) {
+      e.preventDefault();
+      var currentObj = this;
+      var config = {
+        headers: {
+          'content-type': 'multipart/form-data'
+        }
+      };
+      var formData = new FormData();
+      formData.append('file', this.file);
+      formData.append('photo_title', this.name);
+      axios.post('/photos', formData, config).then(function (response) {
+        currentObj.success = response.data.success;
       })["catch"](function (error) {
-        return console.log(error);
+        currentObj.output = error;
       });
     }
   }
@@ -37670,7 +37704,34 @@ var render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "card-body" }, [
             _vm.photos.length
-              ? _c("div")
+              ? _c("div", [
+                  _c("div", { staticClass: "container" }, [
+                    _c("p", [_vm._v("Click on the images to enlarge them.")]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "row" },
+                      _vm._l(_vm.photos, function(photo) {
+                        return _c("div", { key: photo.photo_title }, [
+                          _c("div", { staticClass: "col-md-4" }, [
+                            _c("div", { staticClass: "thumbnail" }, [
+                              _c(
+                                "a",
+                                { attrs: { href: "#", target: "_blank" } },
+                                [
+                                  _c("div", { staticClass: "caption" }, [
+                                    _c("p", [_vm._v(_vm._s(photo.photo_title))])
+                                  ])
+                                ]
+                              )
+                            ])
+                          ])
+                        ])
+                      }),
+                      0
+                    )
+                  ])
+                ])
               : _c("div", [_vm._v("You have not uploaded any photos yet.")])
           ])
         ])
@@ -37700,7 +37761,81 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("p", [_vm._v("TESt")])
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { staticClass: "col-md-8" }, [
+        _c("div", { staticClass: "card" }, [
+          _c("div", { staticClass: "card-header" }, [
+            _vm._v("Upload New Photo")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body" }, [
+            _vm.success != ""
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-success",
+                    attrs: { role: "alert" }
+                  },
+                  [
+                    _vm._v(
+                      "\n                      " +
+                        _vm._s(_vm.success) +
+                        "\n                    "
+                    )
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c(
+              "form",
+              {
+                attrs: { enctype: "multipart/form-data" },
+                on: { submit: _vm.formSubmit }
+              },
+              [
+                _c("strong", [_vm._v("Title:")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.name,
+                      expression: "name"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { type: "text" },
+                  domProps: { value: _vm.name },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.name = $event.target.value
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("strong", [_vm._v("Photo:")]),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "form-control",
+                  attrs: { type: "file" },
+                  on: { change: _vm.onFileChange }
+                }),
+                _vm._v(" "),
+                _c("button", { staticClass: "btn btn-success" }, [
+                  _vm._v("Submit")
+                ])
+              ]
+            )
+          ])
+        ])
+      ])
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true

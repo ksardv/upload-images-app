@@ -1,42 +1,60 @@
 <template>
-<p>TESt</p>
-<!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-  <p>TEs</p>
-</div> -->
-</template>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Upload New Photo</div>
 
+                    <div class="card-body">
+                        <div v-if="success != ''" class="alert alert-success" role="alert">
+                          {{success}}
+                        </div>
+                        <form @submit="formSubmit" enctype="multipart/form-data">
+                        <strong>Title:</strong>
+                        <input type="text" class="form-control" v-model="name">
+                        <strong>Photo:</strong>
+                        <input type="file" class="form-control" v-on:change="onFileChange">
+
+                        <button class="btn btn-success">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
 <script>
-    export default {
-        data: function() {
+    export default{
+        data() {
             return {
-            }
+              name: '',
+              file: '',
+              success: ''
+            };
         },
         methods: {
-            uploadPhoto: function () {
-                axios
-                    .post('/photos')
-                    .then((response) => {
-                        console.log(response.data);
-                        this.photos = response.data
-                    })
-                    .catch(error => console.log(error))
+            onFileChange(e){
+                this.file = e.target.files[0];
+            },
+            formSubmit(e) {
+                e.preventDefault();
+                let currentObj = this;
+
+                const config = {
+                    headers: { 'content-type': 'multipart/form-data' }
+                }
+
+                let formData = new FormData();
+                formData.append('file', this.file);
+                formData.append('photo_title', this.name);
+
+                axios.post('/photos', formData, config)
+                .then(function (response) {
+                    currentObj.success = response.data.success;
+                })
+                .catch(function (error) {
+                    currentObj.output = error;
+                });
             }
         }
     }

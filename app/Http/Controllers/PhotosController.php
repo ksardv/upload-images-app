@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Http;
 use App\Photo;
+use Illuminate\Support\Facades\Storage;
 
 class PhotosController extends Controller
 {
@@ -34,16 +37,26 @@ class PhotosController extends Controller
      */
     public function uploadPhoto(Request $request)
     {
-        $validatedData = $request->validate([
-            'photo' => 'required|file|image|mimes:png|size:1024|dimensions:max_width=1000,max_height=700'
+        $validator = $request->validate([
+            'file' => 'required|file',
+            'photo_title' => 'unique:photos'
         ]);
 
+        $fileName = time().'.'.$request->file->getClientOriginalExtension();
+        //$file = base64_encode(file_get_contents($request->file('file')));
+        //$request->file->move(public_path('upload'), $fileName);
+
+        // when success is returnd with url from the bewlo request I save it in the db as photo_url
+        // $response = Http::post('https://test.rxflodev.com', [
+        //     'imageData' => $request->file('file'),
+        // ]);
+
         $photo = new Photo;
-        $photo->photo_title = $request->title;
-        $photo->photo_url = $request->photo_url;
+        $photo->photo_title = $request->photo_title;
+        $photo->photo_url = $fileName;
         $photo->user_id = Auth::id();
         $photo->save();
 
-        return response()->json('uploading image....');
+        return response()->json(['success'=>'You have successfully upload file.']);
     }
 }
