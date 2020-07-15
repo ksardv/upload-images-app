@@ -15,7 +15,7 @@
                         <strong>Photo:</strong>
                         <input type="file" class="form-control" v-on:change="onFileChange">
 
-                        <button class="btn btn-success">Submit</button>
+                        <button class="btn btn-success" :disabled="submitted">Submit</button>
                         </form>
                     </div>
                 </div>
@@ -29,7 +29,8 @@
             return {
               name: '',
               file: '',
-              success: ''
+              success: '',
+              submitted: false
             };
         },
         methods: {
@@ -38,6 +39,7 @@
             },
             formSubmit(e) {
                 e.preventDefault();
+                this.submitted = true;
                 let currentObj = this;
 
                 const config = {
@@ -50,9 +52,15 @@
 
                 axios.post('/photos', formData, config)
                 .then(function (response) {
+                    currentObj.submitted = false;
                     currentObj.success = response.data.success;
+                    if(response.data.success.length){
+                        currentObj.$router.push({ path: 'photos-list' });
+                    }
+
                 })
                 .catch(function (error) {
+                    currentObj.submitted = false;
                     currentObj.output = error;
                 });
             }
