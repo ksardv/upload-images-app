@@ -6,19 +6,22 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Http;
 use App\Photo;
 use Illuminate\Support\Facades\Storage;
+use App\StorageGateways\PhotoGateway;
 
 class PhotosController extends Controller
 {
-/**
+    protected $storage;
+
+    /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(PhotoGateway $storage)
     {
+        $this->storage = $storage;
         $this->middleware('auth');
     }
 
@@ -44,20 +47,17 @@ class PhotosController extends Controller
 
         //$fileName = time().'.'.$request->file->getClientOriginalExtension();
         $file = base64_encode(file_get_contents($request->file('file')->path()));
-        //$request->file->move(public_path('upload'), $fileName);
 
         // when success is returnd with url from the bewlo request I save it in the db as photo_url
-        $response = Http::post('https://test.rxflodev.com', [
-            'imageData' => $file,
-        ]);
-
-        dd($response->body());
-
-        $photo = new Photo;
-        $photo->photo_title = $request->photo_title;
-        $photo->photo_url = $fileName;
-        $photo->user_id = Auth::id();
-        $photo->save();
+        $url = $this->storage->sendData($file);
+        // the problem here is that the storage returns {"status":"error","message":"Required post data was not sent."}
+        if($url){
+            $photo = new Photo;
+            $photo->photo_title = $request->photo_title;
+            $photo->photo_url = $url;
+            $photo->user_id = Auth::id();
+            $photo->save();
+        }
 
         return response()->json(['success'=>'You have successfully upload file.']);
     }
